@@ -11,7 +11,7 @@ def gaussian_noise(image_in, noise_sigma=35):
     noise = np.random.randn(h, w) * noise_sigma
 
     noisy_image = np.zeros(temp_image.shape, np.float64)
-    if len(temp_image.shape) == 2:
+    if len(temp_image.shape) == 2:  # si es de un solo canal
         noisy_image = temp_image + noise
     else:
         noisy_image[:,:,0] = temp_image[:,:,0] + noise
@@ -62,10 +62,10 @@ def pepper_noise(image, prob=0.05):
     return output
 
 
-image = cv2.imread('image1.jpg')
-noise = pepper_noise(image)
-cv2.imwrite('result.jpg', noise)
-plt.imshow(noise)
-plt.show()
+# image = cv2.imread('image1.jpg')
+# noise = pepper_noise(image)
+# cv2.imwrite('result.jpg', noise)
+# plt.imshow(noise)
+# plt.show()
 # cv2.imshow('ggg', noise)
 # cv2.waitKey(0)
