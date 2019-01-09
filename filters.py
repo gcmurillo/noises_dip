@@ -10,9 +10,9 @@ def maximun_filter(image, mask_size=3):
 
     h = temp_image.shape[0]
     w = temp_image.shape[1]
-    print(temp_image[0:10, 0:10])
-    print(temp_image[0:3, 0:4])
-    print(np.max(temp_image[0:3, 0:4]))
+    # print(temp_image[0:10, 0:10])
+    # print(temp_image[0:3, 0:4])
+    # print(np.max(temp_image[0:3, 0:4]))
 
     if len(temp_image.shape) == 2:  # si es de un solo canal
         for i in range(h - 1):
@@ -47,16 +47,37 @@ def minimun_filter(image, mask_size=3):
         for i in range(h - 1):
             for j in range(w - 1):
                 mask = temp_image[i:i+mask_size, j:j+mask_size]
-                maximum = np.min(mask)
-                new_image[i+(mask_size//2), j+(mask_size//2)] = maximum
+                minimum = np.min(mask)
+                new_image[i+(mask_size//2), j+(mask_size//2)] = minimum
+
+    return new_image
+
+
+def punto_medio_filter(image, mask_size=3):
+    temp_image = np.float64(np.copy(image))
+    new_image = np.float64(np.copy(image))
+
+    h = temp_image.shape[0]
+    w = temp_image.shape[1]
+
+    if len(temp_image.shape) == 2:  # si es de un solo canal
+        for i in range(h - 1):
+            for j in range(w - 1):
+                mask = temp_image[i:i+mask_size, j:j+mask_size]
+                minimum = np.min(mask)
+                maximum = np.max(mask)
+                medio = (minimum + maximum) / 2
+                new_image[i+(mask_size//2), j+(mask_size//2)] = medio
 
     return new_image
 
 
 
+
 image = cv2.imread('image1.jpg',0)
-noisy = noises.salt_noise(image)
-restaured = minimun_filter(noisy)
+noisy = noises.gaussian_noise(image)
+restaured = punto_medio_filter(noisy)
+restaured = punto_medio_filter(restaured)
 plt.subplot(1,3,1),plt.imshow(image, cmap = 'gray')
 plt.title('Source'), plt.xticks([]), plt.yticks([])
 plt.subplot(1,3,2),plt.imshow(noisy, cmap = 'gray')
